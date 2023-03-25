@@ -60,17 +60,13 @@ var choice1 = document.getElementById("btn1");
 var choice2 = document.getElementById("btn2");
 var choice3 = document.getElementById("btn3");
 var answerCheck = document.getElementById("answerCheck");
-
 var summary = document.getElementById("summary");
 var submitInitialBtn = document.getElementById("submitInitialBtn");
 var initialInput = document.getElementById("initialInput");
-
 var highScoreEl = document.getElementById("highScore");
 var scoreEl = document.querySelector("#score");
-
 var goBackBtn = document.getElementById("goBackBtn");
 var clearHighScoreBtn = document.getElementById("clearHighScoreBtn");
-
 var highScoreListEl = document.querySelector("#highScoreList");
 
 var correctAns = 0;
@@ -79,27 +75,24 @@ var scoreResult;
 var questionIndex = 0;
 var totalTime = 76;
 
-// timer
 // start quiz
 function Quiz() {
-  // timeLeftEl.innerHTML = totalTime;
-  // initialInput.innerHTML = "";
   startDiv.style.display = "none";
   questionDiv.style.display = "block";
-  // timerDiv.style.display = "block";
   timeUpDiv.style.display = "none";
-
-  var startTimer = setInterval(function () {
-    totalTime--;
-    timeLeftEl.innerHTML = totalTime;
-    if (totalTime <= 0) {
-      timeUpDiv.style.display = "block";
-      clearInterval(startTimer);
-    }
-  }, 1000);
-
   showQuiz();
 }
+
+// timer
+
+var startTimer = setInterval(function () {
+  totalTime--;
+  timeLeftEl.innerHTML = totalTime;
+  if (totalTime <= 0) {
+    timeUpDiv.style.display = "block";
+    clearInterval(startTimer);
+  }
+}, 1000);
 
 // totalTime <= 0
 
@@ -128,24 +121,40 @@ function checkAnswer(answer) {
     // console.log(correctAns);
     answerCheck.style.display = "block";
     answerCheck.innerHTML = "Correct";
+    startTimerCor = 10;
+    var startTimerCor = setInterval(function () {
+      startTimerCor--;
+      if (startTimerCor === 0) {
+        answerCheck.style.display = "none";
+        clearInterval(startTimerCor);
+      }
+    }, 100);
   } else {
     //    incorrect answer -10 seconds
     totalTime -= 10;
     timeLeftEl.innerHTML = totalTime;
     answerCheck.style.display = "block";
     answerCheck.innerHTML = "Incorrect";
+    startTimerInc = 10;
+    var startTimerInc = setInterval(function () {
+      startTimerInc--;
+      if (startTimerInc === 0) {
+        answerCheck.style.display = "none";
+        clearInterval(startTimerInc);
+      }
+    }, 100);
   }
 
   questionIndex++;
 
   if (questionIndex < questions.length) {
-    console.log(`QI= ${questionIndex}`);
-
     nextQuestion();
   } else {
     endQuestions();
   }
 }
+
+// end function
 
 function endQuestions() {
   summary.style.display = "block";
@@ -157,16 +166,10 @@ function endQuestions() {
   scoreEl.innerHTML = correctAns;
 }
 
-// enter initial and store highscore in local storage
+// enter initial and store high score in local storage
+
 function storeHighScores(event) {
   event.preventDefault();
-
-  // stop function is initial is blank
-  // if (initialInput.value === "") {
-  //     alert("Please enter your initials!");
-  //     return;
-  // }
-
   startDiv.style.display = "none";
   timerDiv.style.display = "none";
   timeUpDiv.style.display = "none";
@@ -195,9 +198,10 @@ function storeHighScores(event) {
   var scoresArrayString = JSON.stringify(scoresArray);
   localStorage.setItem("high scores", scoresArrayString);
 
-  // show current highscores
   showHighScores();
 }
+
+// show high score
 
 function showHighScores() {
   startDiv.style.display = "none";
@@ -224,7 +228,7 @@ function showHighScores() {
   // }
 }
 
-// choices
+// Answers
 
 function chooseZero() {
   checkAnswer(0);
@@ -241,6 +245,8 @@ function chooseTwo() {
 function chooseThree() {
   checkAnswer(3);
 }
+
+// answer event listeners
 
 startBtnEl.addEventListener("click", Quiz);
 choice0.addEventListener("click", chooseZero);
