@@ -74,14 +74,24 @@
             <div class="col-2"></div>
             <div class="col-8 text-left">
               <h2 class="font-weight-bold pt-2 pb-3 m-2">
-                Your score is <span id="score"></span> !
+                Your score is <span id="finalScore"></span> !
               </h2>
               <form>
-                <p class="pt-2 pb-3 m-2">Enter your initials:</p>
-                <textarea id="myTextarea" rows="3" cols="35"></textarea>
-                <p></p>
-                <button id="saved" onclick="save()">Save High Score</button>
-                <button id="shown" onclick="show()">Show High Score</button>
+                <p class="pt-2 pb-3 m-2">
+                  Enter your initials:
+                  <input
+                    id="initialInput"
+                    class="form-control pt-2 pb-3 mt-2"
+                    type="text"
+                  />
+                  <button
+                    type="submit"
+                    id="submitInitialBtn"
+                    class="btn btn-light mt-3"
+                  >
+                    Submit
+                  </button>
+                </p>
               </form>
             </div>
             <div class="col-2"></div>
