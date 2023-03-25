@@ -101,14 +101,14 @@ function nextQuestion() {
 function checkAnswer(answer) {
   answerCheck.style.display = "none";
 
+  // correct answer add to score
+  // Correct or Incorrect answer status will show for 10 millisecond then move on to the next question with
+  // no answer status showing.
+
   if (
     questions[questionIndex].answer === questions[questionIndex].choices[answer]
   ) {
-    // correct add to score
-    // Correct or Incorrect answer status will show for 10 millisecond then move on to the next question with
-    // no answer status showing.
     correctAns++;
-    // console.log(correctAns);
     answerCheck.style.display = "block";
     answerCheck.innerHTML = "Correct";
     startTimerCor = 10;
@@ -164,65 +164,61 @@ function endQuestions() {
 }
 
 // enter initial and store high score in local storage
+// --------------------------------------
 
-// store high score
-
-function storeHighScores(event) {
-  event.preventDefault();
-  startDiv.style.display = "none";
-  timerDiv.style.display = "none";
-  timeUpDiv.style.display = "none";
-  summary.style.display = "none";
-  highScoreEl.style.display = "block";
-
-  var savedHighScores = localStorage.getItem("high scores");
-  var scoresArray;
-
-  if (savedHighScores === null) {
-    scoresArray = [];
-  } else {
-    scoresArray = JSON.parse(savedHighScores);
-  }
-
-  var userScore = {
-    initials: initialInput.value,
-    score: finalScore.textContent,
-  };
-
-  scoresArray.push(userScore);
-
-  var scoresArrayString = JSON.stringify(scoresArray);
-  localStorage.setItem("high scores", scoresArrayString);
-
-  showHighScores();
+// set high score
+// var setHighScore = function (text) {
+//   var highScore = getHighScore();
+//   highScore.push(text);
+//   localStorage.setItem(highScore, JSON.stringify(highScore));
+function save() {
+  var content = document.getElementById("myTextarea").value;
+  localStorage.setItem("myContent", content);
+}
+function show() {
+  var content = localStorage.getItem("myContent");
+  document.getElementById("myTextarea").value = content;
 }
 
-// show high score
+// startDiv.style.display = "none";
+// timerDiv.style.display = "none";
+// timeUpDiv.style.display = "none";
+// summary.style.display = "none";
+// highScoreEl.style.display = "block";
+// var savedHighScores = localStorage.getItem("high scores");
+// var scoresArray;
+//  var userScore = {
+//     initials: initialInput.value,
+//     score: finalScore.textContent,
+//   };
 
-function showHighScores() {
-  startDiv.style.display = "none";
-  timerDiv.style.display = "none";
-  questionDiv.style.display = "none";
-  timeUpDiv.style.display = "none";
-  summary.style.display = "none";
-  highScoreEl.style.display = "block";
+// get show high score
 
-  var savedHighScores = localStorage.getItem("high scores");
+var getHighScore = function () {
+  ret;
+  // startDiv.style.display = "none";
+  // timerDiv.style.display = "none";
+  // questionDiv.style.display = "none";
+  // timeUpDiv.style.display = "none";
+  // summary.style.display = "none";
+  // highScoreEl.style.display = "block";
 
-  // check if there is any in local storage
-  if (savedHighScores === null) {
-    return;
-  }
-  // console.log(savedHighScores);
+  // var savedHighScores = localStorage.getItem("high scores");
+  //  var storedHighScores = JSON.parse(savedHighScores);
+  // var newHighScore = document.createElement("p");
+};
 
-  var storedHighScores = JSON.parse(savedHighScores);
+// clear local storage
+clearHighScoreBtn.addEventListener("click", function () {
+  localStorage.clear();
+  highScoreListEl.innerHTML = "High Scores Cleared";
+  highScoreListEl.setAttribute(
+    "style",
+    "font-family: Arial, Helvetica, sans-serif sans-serif;"
+  );
+});
 
-  // for (i=0; i < storedHighScores.length; i++) {
-  var newHighScore = document.createElement("p");
-  newHighScore.innerHTML = `${storedHighScores[i].initials}: ${storedHighScores[i].score}`;
-  highScoreListEl.appendChild(newHighScore);
-  // }
-}
+//  ---------------------
 
 // Answers
 
@@ -250,19 +246,6 @@ choice1.addEventListener("click", chooseOne);
 choice2.addEventListener("click", chooseTwo);
 choice3.addEventListener("click", chooseThree);
 
-// local storage
-var savedHighScores = localStorage.getItem("high scores");
-
-// clear local storage
-clearHighScoreBtn.addEventListener("click", function () {
-  localStorage.removeItem("high scores");
-  highScoreListEl.innerHTML = "Scores Cleared!";
-  highScoreListEl.setAttribute(
-    "style",
-    "font-family: Arial, Helvetica, sans-serif sans-serif;"
-  );
-});
-
 // high score utility event listeners
 
 submitInitialBtn.addEventListener("click", function (event) {
@@ -270,9 +253,7 @@ submitInitialBtn.addEventListener("click", function (event) {
 });
 
 viewHighScoreBtn.addEventListener("click", function (event) {
-  highScoreEl.style.display = "block";
-
-  showHighScores(event); // ?
+  showHighScores(event);
 });
 
 goBackBtn.addEventListener("click", function () {

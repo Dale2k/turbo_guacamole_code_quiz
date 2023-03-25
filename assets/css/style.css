@@ -9,7 +9,7 @@ body {
 }
 
 
-#startBtn, #btn0, #btn1,  #btn2, #btn3, #btn4, #goBackBtn, #clearHighScoreBtn, #submitInitialBtn {
+#startBtn, #btn0, #btn1,  #btn2, #btn3, #btn4, #goBackBtn, #clearHighScoreBtn, #submitInitialBtn, #saved, #shown {
   border: 2px solid  purple;
   background-color: purple;
   color:white; 
