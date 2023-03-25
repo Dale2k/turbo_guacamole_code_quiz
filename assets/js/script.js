@@ -44,8 +44,8 @@ var questions = [
   },
 ];
 
-// Variables
-var viewHighScoreEl = document.querySelector("#viewHighScore");
+// Global Variables -  placeholders
+var viewHighScoreBtn = document.getElementById("viewHighScoreBtn");
 var timerDiv = document.getElementById("timer");
 var timeLeftEl = document.querySelector("#timeLeft");
 var timeUpDiv = document.getElementById("timeUp");
@@ -80,13 +80,14 @@ function Quiz() {
   startDiv.style.display = "none";
   questionDiv.style.display = "block";
   timeUpDiv.style.display = "none";
-  showQuiz();
-}
 
-// ShowQuiz() is the next question container
-function showQuiz() {
   nextQuestion();
 }
+
+// ShowQuiz() is the next question reusable container
+// function showQuiz() {
+//   nextQuestion();
+// }
 
 function nextQuestion() {
   questionTitleEl.innerHTML = questions[questionIndex].question;
@@ -104,6 +105,8 @@ function checkAnswer(answer) {
     questions[questionIndex].answer === questions[questionIndex].choices[answer]
   ) {
     // correct add to score
+    // Correct or Incorrect answer status will show for 10 millisecond then move on to the next question with
+    // no answer status showing.
     correctAns++;
     // console.log(correctAns);
     answerCheck.style.display = "block";
@@ -132,45 +135,37 @@ function checkAnswer(answer) {
     }, 100);
   }
 
+  // Primary timer placed inside checkAnswer() to allow access to questionIndex and questions.length property.
   questionIndex++;
 
   var startTimer = setInterval(function () {
     totalTime--;
     timeLeftEl.innerHTML = totalTime;
-    if (totalTime === 0) {
+    if (totalTime <= 0) {
       clearInterval(startTimer);
+
       endQuestions();
-      timeUpDiv.style.display = "block";
     } else if (questionIndex < questions.length) {
-      timeUpDiv.style.display = "none";
       nextQuestion();
     } else {
-      timeUpDiv.style.display = "none";
+      summary.style.display = "block";
       endQuestions();
     }
   }, 1000);
 }
-
-// var startTimer = setInterval(function () {
-//   totalTime--;
-//   timeLeftEl.innerHTML = totalTime;
-//   if (totalTime <= 0) {
-//     timeUpDiv.style.display = "block";
-//     clearInterval(startTimer);
-//   }
-// }, 1000);
-
-// end function
 
 function endQuestions() {
   summary.style.display = "block";
   questionDiv.style.display = "none";
   startDiv.style.display = "none";
   timerDiv.style.display = "none";
+  timeUpDiv.style.display = "block";
   scoreEl.innerHTML = correctAns;
 }
 
 // enter initial and store high score in local storage
+
+// store high score
 
 function storeHighScores(event) {
   event.preventDefault();
@@ -180,7 +175,6 @@ function storeHighScores(event) {
   summary.style.display = "none";
   highScoreEl.style.display = "block";
 
-  // store scores into local storage
   var savedHighScores = localStorage.getItem("high scores");
   var scoresArray;
 
@@ -195,10 +189,8 @@ function storeHighScores(event) {
     score: finalScore.textContent,
   };
 
-  console.log(userScore);
   scoresArray.push(userScore);
 
-  // stringify array in order to store in local
   var scoresArrayString = JSON.stringify(scoresArray);
   localStorage.setItem("high scores", scoresArrayString);
 
@@ -261,24 +253,30 @@ choice3.addEventListener("click", chooseThree);
 // local storage
 var savedHighScores = localStorage.getItem("high scores");
 
+// clear local storage
 clearHighScoreBtn.addEventListener("click", function () {
   localStorage.removeItem("high scores");
-  highScoreListEl.innerHTML = "High Scores Cleared!";
+  highScoreListEl.innerHTML = "Scores Cleared!";
   highScoreListEl.setAttribute(
     "style",
     "font-family: Arial, Helvetica, sans-serif sans-serif;"
   );
 });
 
+// high score utility event listeners
+
 submitInitialBtn.addEventListener("click", function (event) {
   storeHighScores(event);
 });
 
-viewHighScoreEl.addEventListener("click", function (event) {
-  showHighScores(event);
+viewHighScoreBtn.addEventListener("click", function (event) {
+  highScoreEl.style.display = "block";
+
+  showHighScores(event); // ?
 });
 
 goBackBtn.addEventListener("click", function () {
   startDiv.style.display = "block";
+
   highScoreEl.style.display = "none";
 });
