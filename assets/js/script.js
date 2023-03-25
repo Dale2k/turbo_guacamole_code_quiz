@@ -20,7 +20,7 @@ var questions = [
     choices: [
       "1. numbers and strings",
       "2. other arrays",
-      "3. booleans",
+      "3. boolean values",
       "4. all of the above",
     ],
     answer: "4. all of the above",
@@ -37,7 +37,7 @@ var questions = [
     choices: [
       "1. Javascript",
       "2. terminal / bash",
-      "3. for looops",
+      "3. for loops",
       "4. console.log",
     ],
     answer: "4. console.log",
@@ -82,19 +82,6 @@ function Quiz() {
   timeUpDiv.style.display = "none";
   showQuiz();
 }
-
-// timer
-
-var startTimer = setInterval(function () {
-  totalTime--;
-  timeLeftEl.innerHTML = totalTime;
-  if (totalTime <= 0) {
-    timeUpDiv.style.display = "block";
-    clearInterval(startTimer);
-  }
-}, 1000);
-
-// totalTime <= 0
 
 // ShowQuiz() is the next question container
 function showQuiz() {
@@ -147,12 +134,31 @@ function checkAnswer(answer) {
 
   questionIndex++;
 
-  if (questionIndex < questions.length) {
-    nextQuestion();
-  } else {
-    endQuestions();
-  }
+  var startTimer = setInterval(function () {
+    totalTime--;
+    timeLeftEl.innerHTML = totalTime;
+    if (totalTime === 0) {
+      clearInterval(startTimer);
+      endQuestions();
+      timeUpDiv.style.display = "block";
+    } else if (questionIndex < questions.length) {
+      timeUpDiv.style.display = "none";
+      nextQuestion();
+    } else {
+      timeUpDiv.style.display = "none";
+      endQuestions();
+    }
+  }, 1000);
 }
+
+// var startTimer = setInterval(function () {
+//   totalTime--;
+//   timeLeftEl.innerHTML = totalTime;
+//   if (totalTime <= 0) {
+//     timeUpDiv.style.display = "block";
+//     clearInterval(startTimer);
+//   }
+// }, 1000);
 
 // end function
 
@@ -161,8 +167,6 @@ function endQuestions() {
   questionDiv.style.display = "none";
   startDiv.style.display = "none";
   timerDiv.style.display = "none";
-  timeUpDiv.style.display = "block";
-
   scoreEl.innerHTML = correctAns;
 }
 
