@@ -54,7 +54,7 @@ var startBtnEl = document.querySelector("#startBtn");
 var startDiv = document.getElementById("startDiv");
 
 var questionDiv = document.getElementById("questionDiv");
-var questionTitle = document.getElementById("questionTitle");
+var questionTitleEl = document.querySelector("#questionTitle");
 var choice0 = document.getElementById("btn0");
 var choice1 = document.getElementById("btn1");
 var choice2 = document.getElementById("btn2");
@@ -89,7 +89,7 @@ function showQuiz() {
 }
 
 function nextQuestion() {
-  questionTitle.innerHTML = questions[questionIndex].question;
+  questionTitleEl.innerHTML = questions[questionIndex].question;
   choice0.innerHTML = questions[questionIndex].choices[0];
   choice1.innerHTML = questions[questionIndex].choices[1];
   choice2.innerHTML = questions[questionIndex].choices[2];
