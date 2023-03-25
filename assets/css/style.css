@@ -1,20 +1,24 @@
-* {box-sizing: border-box;
-    
+*  {
     font-family: Arial, Helvetica, sans-serif sans-serif;
-}
+} 
+
+
 
 body {
-    background-color: whitesmoke; 
+  background-color: whitesmoke; 
 }
 
 
-#start-quiz-button, #btn0, #btn1,  #btn2, #btn3, #btn4, #goBackBtn, #clearHighScoreBtn, #submitInitialBtn {
-    border: 2px solid  purple;
-    background-color: purple;
-    color:white; 
- }  
-   
+#startBtn, #btn0, #btn1,  #btn2, #btn3, #btn4, #goBackBtn, #clearHighScoreBtn, #submitInitialBtn {
+  border: 2px solid  purple;
+  background-color: purple;
+  color:white; 
+}  
+ 
 
- #viewHighScore, #timeLeft , #timer{
-    color: purple;
+
+
+#viewHighScore, #timeLeft , #timer, #timeUp{
+  color: purple;
 }
+
