@@ -43,3 +43,30 @@ THEN I can save my initials and my score
 ## Mock-Up
 
 The following animation demonstrates the application functionality:
+
+Initial title page
+
+![Quiz Title page](./assets/images/img1.png)
+
+Timer start when start quiz pressed.
+
+![Quiz timer2](./assets/images/img2.png)
+
+When a question is answered the outcome "Correct" or "Incorrect
+flashes on the screen for 3/10 of a second. The next question starts clean and the question status from the previous status is not on the page.
+
+![answer ques timer2](./assets/images/img2-5.png)
+
+Presents the user score of correct answers.
+
+![Quiz score](./assets/images/img3.png)
+
+Input user name.
+
+![user name](./assets/images/img4.png)
+
+user score saved in and pulled from local storage.
+![local storage get- set](./assets/images/img5.png)
+
+local storage cleared
+![Quiz Title page2](./assets/images/img9.png)

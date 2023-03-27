@@ -264,9 +264,9 @@ viewHighScoreBtn.addEventListener("click", function () {
 });
 
 goBackBtn.addEventListener("click", function () {
-  timeUpDiv.style.display = "block";
   scoreSectionEl.style.display = "none";
   summary.style.display = "none";
+  startDiv.style.display = "block";
 });
 
 clearHighScoreBtn.addEventListener("click", function () {
