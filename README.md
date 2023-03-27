@@ -2,9 +2,9 @@ Depository Name:
 
 turbo_guacamole_code_quiz
 
-URL:
+URL: https://github.com/Dale2k/turbo_guacamole_code_quiz
 
-deployed address:
+deployed address: https://dale2k.github.io/turbo_guacamole_code_quiz/
 
 # 04 Web APIs: Code Quiz
 
