@@ -6,6 +6,11 @@ var questions = [
     answer: "3. alerts",
   },
   {
+    question: "Commonly used data types DO NOT include:",
+    choices: ["1. strings", "2. booleans", "3. alerts", "4. numbers"],
+    answer: "3. alerts",
+  },
+  {
     question: "The condition in an if/else statement is enclosed within _____.",
     choices: [
       "1. quotes",
@@ -52,7 +57,6 @@ var timeUpDiv = document.getElementById("timeUp");
 var bucketEl = document.querySelector("#bucket");
 var startBtnEl = document.querySelector("#startBtn");
 var startDiv = document.getElementById("startDiv");
-
 var questionDiv = document.getElementById("questionDiv");
 var questionTitleEl = document.querySelector("#questionTitle");
 var choice0 = document.getElementById("btn0");
@@ -64,10 +68,11 @@ var summary = document.getElementById("summary");
 var submitInitialBtn = document.getElementById("submitInitialBtn");
 var initialInput = document.getElementById("initialInput");
 var highScoreEl = document.getElementById("highScore");
+var scoreSectionEl = document.getElementById("scoreSection");
 var scoreEl = document.querySelector("#score");
 var goBackBtn = document.getElementById("goBackBtn");
 var clearHighScoreBtn = document.getElementById("clearHighScoreBtn");
-var highScoreListEl = document.querySelector("#highScoreList");
+var highScoresEl = document.getElementById("highScores");
 
 var correctAns = 0;
 var questionNum = 0;
@@ -81,13 +86,8 @@ function Quiz() {
   questionDiv.style.display = "block";
   timeUpDiv.style.display = "none";
 
-  nextQuestion();
+  checkAnswer();
 }
-
-// ShowQuiz() is the next question reusable container
-// function showQuiz() {
-//   nextQuestion();
-// }
 
 function nextQuestion() {
   questionTitleEl.innerHTML = questions[questionIndex].question;
@@ -99,45 +99,6 @@ function nextQuestion() {
 
 // after question is answered, show if correct or wrong
 function checkAnswer(answer) {
-  answerCheck.style.display = "none";
-
-  // correct answer add to score
-  // Correct or Incorrect answer status will show for 10 millisecond then move on to the next question with
-  // no answer status showing.
-
-  if (
-    questions[questionIndex].answer === questions[questionIndex].choices[answer]
-  ) {
-    correctAns++;
-    answerCheck.style.display = "block";
-    answerCheck.innerHTML = "Correct";
-    startTimerCor = 10;
-    var startTimerCor = setInterval(function () {
-      startTimerCor--;
-      if (startTimerCor === 0) {
-        answerCheck.style.display = "none";
-        clearInterval(startTimerCor);
-      }
-    }, 100);
-  } else {
-    //    incorrect answer -10 seconds
-    totalTime -= 10;
-    timeLeftEl.innerHTML = totalTime;
-    answerCheck.style.display = "block";
-    answerCheck.innerHTML = "Incorrect";
-    startTimerInc = 10;
-    var startTimerInc = setInterval(function () {
-      startTimerInc--;
-      if (startTimerInc === 0) {
-        answerCheck.style.display = "none";
-        clearInterval(startTimerInc);
-      }
-    }, 100);
-  }
-
-  // Primary timer placed inside checkAnswer() to allow access to questionIndex and questions.length property.
-  questionIndex++;
-
   var startTimer = setInterval(function () {
     totalTime--;
     timeLeftEl.innerHTML = totalTime;
@@ -152,6 +113,43 @@ function checkAnswer(answer) {
       endQuestions();
     }
   }, 1000);
+
+  // correct answer add to score
+  // Correct or Incorrect answer status will show for 5 millisecond then move on to the next question with
+  // no answer status showing.
+
+  if (
+    questions[questionIndex].answer === questions[questionIndex].choices[answer]
+  ) {
+    correctAns++;
+    answerCheck.style.display = "block";
+    answerCheck.innerHTML = "Correct";
+    startTimerCor = 3;
+    var startTimerCor = setInterval(function () {
+      startTimerCor--;
+      if (startTimerCor === 0) {
+        answerCheck.style.display = "none";
+        clearInterval(startTimerCor);
+      }
+    }, 100);
+  } else {
+    //    incorrect answer -10 seconds
+    totalTime -= 10;
+    timeLeftEl.innerHTML = totalTime;
+    answerCheck.style.display = "block";
+    answerCheck.innerHTML = "Incorrect";
+    startTimerInc = 3;
+    var startTimerInc = setInterval(function () {
+      startTimerInc--;
+      if (startTimerInc === 0) {
+        answerCheck.style.display = "none";
+        clearInterval(startTimerInc);
+      }
+    }, 100);
+  }
+
+  // Primary timer placed inside checkAnswer() to allow access to questionIndex and questions.length property.
+  questionIndex++;
 }
 
 function endQuestions() {
@@ -160,65 +158,72 @@ function endQuestions() {
   startDiv.style.display = "none";
   timerDiv.style.display = "none";
   timeUpDiv.style.display = "block";
-  scoreEl.innerHTML = correctAns;
+  scoreEl.textContent = correctAns;
 }
 
 // enter initial and store high score in local storage
-// --------------------------------------
 
-// set high score
-// var setHighScore = function (text) {
-//   var highScore = getHighScore();
-//   highScore.push(text);
-//   localStorage.setItem(highScore, JSON.stringify(highScore));
-function save() {
-  var content = document.getElementById("myTextarea").value;
-  localStorage.setItem("myContent", content);
+// ==========================
+function storeHighScores(event) {
+  event.preventDefault();
+
+  startDiv.style.display = "none";
+  timerDiv.style.display = "none";
+  timeUpDiv.style.display = "none";
+  summary.style.display = "none";
+  scoreSection.style.display = "block";
+
+  // store scores into local storage
+  var savedHighScores = localStorage.getItem("high scores");
+  var scoresArray;
+
+  if (savedHighScores === null) {
+    scoresArray = [];
+  } else {
+    scoresArray = JSON.parse(savedHighScores);
+  }
+
+  var userScore = {
+    initials: initialInput.value,
+    score: scoreEl.textContent,
+  };
+
+  // console.log(userScore);
+  scoresArray.push(userScore);
+
+  // stringify array in order to store in local
+  var scoresArrayString = JSON.stringify(scoresArray);
+  localStorage.setItem("high scores", scoresArrayString);
+
+  showHighScores();
 }
-function show() {
-  var content = localStorage.getItem("myContent");
-  document.getElementById("myTextarea").value = content;
+
+// function to show high scores
+// var i = 0;
+function showHighScores() {
+  startDiv.style.display = "none";
+  timerDiv.style.display = "none";
+  questionDiv.style.display = "none";
+  timeUpDiv.style.display = "none";
+  summary.style.display = "none";
+  scoreSectionEl.style.display = "block";
+
+  var savedHighScores = localStorage.getItem("high scores");
+
+  // check if there is any in local storage
+  if (savedHighScores === null) {
+    return;
+  }
+
+  var storedHighScores = JSON.parse(savedHighScores);
+
+  for (i = 0; i < storedHighScores.length; i++) {
+    var newScore = document.createElement("p");
+    newScore.innerHTML = `${storedHighScores[i].initials} : ${storedHighScores[i].score} `;
+
+    highScoresEl.appendChild(newScore);
+  }
 }
-
-// startDiv.style.display = "none";
-// timerDiv.style.display = "none";
-// timeUpDiv.style.display = "none";
-// summary.style.display = "none";
-// highScoreEl.style.display = "block";
-// var savedHighScores = localStorage.getItem("high scores");
-// var scoresArray;
-//  var userScore = {
-//     initials: initialInput.value,
-//     score: finalScore.textContent,
-//   };
-
-// get show high score
-
-var getHighScore = function () {
-  ret;
-  // startDiv.style.display = "none";
-  // timerDiv.style.display = "none";
-  // questionDiv.style.display = "none";
-  // timeUpDiv.style.display = "none";
-  // summary.style.display = "none";
-  // highScoreEl.style.display = "block";
-
-  // var savedHighScores = localStorage.getItem("high scores");
-  //  var storedHighScores = JSON.parse(savedHighScores);
-  // var newHighScore = document.createElement("p");
-};
-
-// clear local storage
-clearHighScoreBtn.addEventListener("click", function () {
-  localStorage.clear();
-  highScoreListEl.innerHTML = "High Scores Cleared";
-  highScoreListEl.setAttribute(
-    "style",
-    "font-family: Arial, Helvetica, sans-serif sans-serif;"
-  );
-});
-
-//  ---------------------
 
 // Answers
 
@@ -248,16 +253,27 @@ choice3.addEventListener("click", chooseThree);
 
 // high score utility event listeners
 
+var savedHighScores = localStorage.getItem("high scores");
+
 submitInitialBtn.addEventListener("click", function (event) {
   storeHighScores(event);
 });
 
-viewHighScoreBtn.addEventListener("click", function (event) {
-  showHighScores(event);
+viewHighScoreBtn.addEventListener("click", function () {
+  scoreSectionEl.style.display = "block";
+  timeUpDiv.style.display = "none";
 });
 
 goBackBtn.addEventListener("click", function () {
-  startDiv.style.display = "block";
+  timeUpDiv.style.display = "block";
+  scoreSectionEl.style.display = "none";
+});
 
-  highScoreEl.style.display = "none";
+clearHighScoreBtn.addEventListener("click", function () {
+  localStorage.removeItem("high scores");
+  highScoresEl.innerHTML = "High Scores Cleared!";
+  highScoresEl.setAttribute(
+    "style",
+    "font-family: 'Arial', sans-serif; font-style: italic;"
+  );
 });
